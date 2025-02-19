@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Category, Animal
-from .serializers import CategorySerializer, AnimalSerializer
+from .models import Category, Animal, Pet
+from .serializers import CategorySerializer, AnimalSerializer, PetSerializer
 from .filters import AnimalFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
@@ -27,3 +27,11 @@ class AnimalDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Animal.objects.all()
     serializer_class = AnimalSerializer
    
+class PetList(generics.ListCreateAPIView):
+    queryset = Pet.objects.all()
+    serializer_class = PetSerializer
+
+
+class PetDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Pet.objects.all()
+    serializer_class = PetSerializer

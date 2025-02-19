@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Animal
+from .models import Category, Animal, Pet
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,4 +9,10 @@ class CategorySerializer(serializers.ModelSerializer):
 class AnimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Animal
+        fields = '__all__'
+
+
+class PetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pet
         fields = '__all__'
