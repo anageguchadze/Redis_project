@@ -22,15 +22,17 @@ class AnimalList(generics.ListCreateAPIView):
     queryset = Animal.objects.all()
     serializer_class = AnimalSerializer
     # filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    # filter_class = AnimalFilter
+    filter_backends = [DjangoFilterBackend]
+    filter_class = AnimalFilter
     # search_fields = ['name', 'category__name', 'scientific_name', 'habitat', 'diet', 'status']
     def list(self, request, *args, **kwargs):
-        cache_key = 'animal_list'
-        cache_time = 60 * 5
+        query_params = request.query_params
+        cache_key = f'animal_list_{query_params}'
         data = cache.get(cache_key)
         if not data:
-            animals = Animal.objects.all()
-            data = AnimalSerializer(animals, many=True).data
+            filtered_queryset = self.filter_queryset(self.get_queryset())
+            data = AnimalSerializer(filtered_queryset, many=True).data
+            cache_time = 60 * 5
             cache.set(cache_key, data, cache_time)
         return Response(data)
 
